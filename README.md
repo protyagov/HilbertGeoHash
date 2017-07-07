@@ -14,11 +14,11 @@ In addition calculated geo hash is build so that it can be compared with < and >
 ---------------
 Here is some benchmark results. It calculates hilbert value for each coordinate on (0,0)-(n,n) diagonal:
 ```bash
-Hibert Cruve algorithm by Ningtao Chen, Data size:  100 -> 0.646988 msec
+H-Cruve algorithm by Ningtao Chen, Resolution:  100 ->   0.64 msec
 
-Hilbert Cruve algorithm by Xian Lu,     Data size:  100 -> 1.449083 msec
+H-Cruve algorithm by Xian Lu,      Resolution:  100 ->   1.44 msec
 
-Hibert Cruve algorithm by Ningtao Chen, Data size: 1000 -> 3.899346 msec
+H-Cruve algorithm by Ningtao Chen, Resolution: 1000 ->   3.93 msec
 
-Hilbert Cruve algorithm by Xian Lu,     Data size: 1000 -> 130.5336 msec
+H-Cruve algorithm by Xian Lu,      Resolution: 1000 -> 130.53 msec
 ```
