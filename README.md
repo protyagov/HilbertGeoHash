@@ -3,13 +3,17 @@ Calculate Hilbert curve value in linear time O(n) on huge space
 
 ![Alt text](h2.png?raw=true "Hilbert Curve of 8 and 16 order")
 
-In my search for some fast Geo Hash function to use on iPhone project I did not find much. Start looking around and found various space curves. A space curve is 1D line that goes throught every coordinate exactly one time and therefore can be used as hash for mapping coordinates. After consideration I choose Z-Curve and Hilber-Curve and finally decieded to implement Hilbert curve. 
-Found several implementation in C, Java and C# languages. Converted about 3 different implementations into Swift 4 and was upset with performance. I want to use geo has on world map with acceptable accuracy. 
+**GeoHash** - Hash for a spatial coordinate
 
-So, globe is 360 degrees and good accuracy would be 100,000 points per degree. Therefore I needed fast way to calculate Hilber curve of order 360 x 100000 = 36,000,000. All implementations I found did not peform well on box 36 by 36 million points. The one I liked the most was Xian Lu algorithm published in 1996 and then implemented in several different languages. I have converted one of implemnetaitons to Swift 4 language but was not happy with performance and I doubt it can work on very large Hilber resolution without modifications (because of bitwise operations on the resoluction, I think it would overflow).
+**Hilbert Curve** - Line that travels through every coordinate exactly once and therefore is perfect candidate for geo hash value.
 
-When I almost gave up on Hilber Curve implementation I found awsome work published in 2006 by Ningtao Chen from Huazhong University, China. That algorithm does run in linear O(n) time and can handle 2^32 resoluctions. Actual calculation of Hilbert code (geo hash) only takes coordinates and does not requre to provide resoluction N as others implemenations do.
-In addition calculated geo hash is build so that it can be compared with < and > with other hashes. Therefore we can compare geo hash of A and B and see which one is closer to origin on the curve.
+Globe is 360 degrees, good precision is 100,000 points per a degree = 360 x 100,000 = 36,000,000. I needed a function to quickly calculate geohash for 36x36 million box. Second requirement is ability to use < and > on geo hash value to figure our how far given coordinates from each other or from origin -- so instead of comparing coordinates we would compare their geohashes which would be faster, especially when number of dimensions increase.
+
+While looking for fast geo hash in Swift for iPhone project I did not really find anything. Search for spatial curves produced several results and Hilbert's curve was selected. Several algorithms in C, Java and C# to calculate Hilbert's value were found. The most I liked Xian Lu algorithm (published in 1996) implementation in Java. I converted that to Swift 4 and ran several tests. Unfortunately performance on real size data was slow.
+
+When I almost gave up I have discovered work of Ningtao Chen (Huazhong University, China) published in 2006. His algorithm runs in linear O(n) time and can handle 2^32 resolution. Also, it does not require to know space resolution N, it only takes coordinates. Therefore performance is O(m) instead of O(n) where m < n.
+
+Benchmark results in Swift 4 compiled with -OFast flag. Program calculates hilbert value for each coordinate on (0,0)-(n,n) diagonal using Chen and Lu algorithms:
 
 ---------------
 Here is some benchmark results. It calculates hilbert value for each coordinate on (0,0)-(n,n) diagonal:
