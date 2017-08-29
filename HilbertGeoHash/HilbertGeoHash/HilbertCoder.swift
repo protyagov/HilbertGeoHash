@@ -38,8 +38,9 @@ class HilbertCoder {
                 y -= w
             } else if x < m && y < m {
                 h += "0"
-                x = y
-                y = x
+                x = x ^ y
+                y = x ^ y
+                x = x ^ y
             } else if x < m && y >= m {
                 if rm & 1 == 0 {
                     h += "3"
